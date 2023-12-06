@@ -1,0 +1,280 @@
+---
+title: "Final_Project"
+author: "Chenjia"
+date: "2023-11-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(here)
+here()
+```
+```{r}
+#Import data set and drop first 4 rows
+Michigan_raw<- read.csv(file=here("Final_project/Michigan_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+Minnesota_raw<- read.csv(file=here("Final_project/Minnesota_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+Nevada_raw<- read.csv(file=here("Final_project/Nevada_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+New_Mexico_raw<- read.csv(file=here("Final_project/New_Mexico_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+California_raw<- read.csv(file=here("Final_project/California_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+Connecticut_raw<- read.csv(file=here("Final_project/Connecticut_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+Illinois_raw<- read.csv(file=here("Final_project/Illinois_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+Maine_raw<- read.csv(file=here("Final_project/Maine_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+New_York_raw<- read.csv(file=here("Final_project/New_York_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+Oregon_raw<- read.csv(file=here("Final_project/Oregon_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+Virginia_raw<- read.csv(file=here("Final_project/Virginia_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+Washington_raw<- read.csv(file=here("Final_project/Washington_Net_generation_for_all_sectors.csv"),
+           stringsAsFactors = TRUE, skip=4)
+```
+
+
+
+```{r}
+# Remove the first 4 rows with no useful information
+# Transpose the dataframe
+# Convert to a data frame and set column names
+# Drop the first 3 rows and repeated columns
+# Generate sequence of dates starting from January 2001
+# Add a 'State' column indicating 'Michigan'
+# Rename columns for clarity
+Michigan <- Michigan_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Michigan")
+
+Minnesota <- Minnesota_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Minnesota")
+
+Nevada <- Nevada_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Nevada")
+
+New_Mexico <- New_Mexico_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "New_Mexico")
+
+California <- California_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "California")
+
+Connecticut <- Connecticut_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Connecticut")
+
+Illinois <- Illinois_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Illinois")
+
+Maine <- Maine_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Maine")
+
+New_York <- New_York_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "New_York")
+
+Oregon <- Oregon_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Oregon")
+
+Virginia <- Virginia_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Virginia")
+
+Washington <- Washington_raw %>%
+  slice(-c(1:4)) %>%
+  t() %>%
+  as.data.frame(stringsAsFactors = FALSE) %>%
+  setNames(.[1, ]) %>%
+  .[-c(1:3), ] %>%
+  select(-c(11:13)) %>%
+  mutate(Date = seq(as.Date("2001-01-01"), by = "1 month", length.out = nrow(.)),
+         State = "Washington")
+```
+
+
+```{r}
+#build a function to change the name of columns
+set_column_names <- function(data) {
+  names(data) <- c(
+    "All fuels",
+    "coal",
+    "petroleum liquids",
+    "petroleum coke",
+    "natural gas",
+    "other gases",
+    "nuclear",
+    "conventional hydroelectric",
+    "other renewables",
+    "other renewables:wind",
+    "other renewables:geothermal",
+    "other renewables:biomass",
+    "biomass:wood and wood-derived fuels",
+    "biomass:other biomass",
+    "hydro-electric pumped storage",
+    "other",
+    "all solar",
+    "small-scale solar photovoltaic",
+    "all utility-scale solar",
+    "all utility-scale solar:utility-scale photovoltaic",
+    "all utility-scale solar:utility-scale thermal",
+    "Date",
+    "State"
+  )
+  rownames(data) <- seq_len(nrow(data))
+  return(data)
+}
+```
+
+```{r}
+#Rename columns
+Michigan <- set_column_names(Michigan)
+Minnesota <- set_column_names(Minnesota)
+Nevada <- set_column_names(Nevada)
+New_Mexico <- set_column_names(New_Mexico)
+California <- set_column_names(California)
+Connecticut <- set_column_names(Connecticut)
+Illinois <- set_column_names(Illinois)
+Maine <- set_column_names(Maine)
+New_York <- set_column_names(New_York)
+Oregon <- set_column_names(Oregon)
+Virginia <- set_column_names(Virginia)
+Washington <- set_column_names(Washington)
+```
+
+
+```{r}
+#Build a function to convert columns to numeric
+convert_columns_to_numeric <- function(data) {
+  columns_to_convert <- 1:(ncol(data) - 2)
+  data[, columns_to_convert] <- apply(data[, columns_to_convert], 2, as.numeric)
+  return(data)
+}
+
+```
+
+```{r}
+#Convert to numeric
+Michigan <- convert_columns_to_numeric(Michigan)
+Minnesota <- convert_columns_to_numeric(Minnesota)
+Nevada <- convert_columns_to_numeric(Nevada)
+New_Mexico <- convert_columns_to_numeric(New_Mexico)
+California <- convert_columns_to_numeric(California)
+Connecticut <- convert_columns_to_numeric(Connecticut)
+Illinois <- convert_columns_to_numeric(Illinois)
+Maine <- convert_columns_to_numeric(Maine)
+New_York <- convert_columns_to_numeric(New_York)
+Oregon <- convert_columns_to_numeric(Oregon)
+Virginia <- convert_columns_to_numeric(Virginia)
+Washington <- convert_columns_to_numeric(Washington)
+
+```
+
+
+```{r}
+#Generate a dataframe with all states
+combined_df <- rbind(Michigan, Minnesota, Nevada, New_Mexico, California, Connecticut,  Illinois, Maine,New_York, Oregon, Virginia, Washington)
+```
+
+```{r}
+#Export data frame
+write.csv(Michigan, file = "Michigan.csv", row.names = FALSE)
+write.csv(Minnesota, file = "Minnesota.csv", row.names = FALSE)
+write.csv(Nevada, file = "Nevada.csv", row.names = FALSE)
+write.csv(New_Mexico, file = "New_Mexico.csv", row.names = FALSE)
+write.csv(California, file = "California.csv", row.names = FALSE)
+write.csv(Connecticut, file = "Connecticut.csv", row.names = FALSE)
+write.csv(Illinois, file = "Illinois.csv", row.names = FALSE)
+write.csv(Maine, file = "Maine.csv", row.names = FALSE)
+write.csv(New_York, file = "New_York.csv", row.names = FALSE)
+write.csv(Oregon, file = "Oregon.csv", row.names = FALSE)
+write.csv(Virginia, file = "Virginia.csv", row.names = FALSE)
+write.csv(Washington, file = "Washington.csv", row.names = FALSE)
+write.csv(combined_df, file = "combined_df.csv", row.names = FALSE)
+```
+
+
