@@ -21,6 +21,7 @@ library(trend)
 library(zoo)
 library(Kendall)
 library(tseries)
+library(forecast)
 
 file_list <-
   list.files(
@@ -34,11 +35,17 @@ csv_reader <- function(i) {
   file_i <- read.csv(file_list[i], stringsAsFactors = TRUE)
 }
 
+mytheme <- theme_bw()+
+  theme(plot.title = element_text(hjust=0.5), 
+        plot.subtitle =element_text(hjust=0.5),
+        text=element_text(size=12, family='sans'),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank())
 ```
 
 
 ```{r run sample, echo=FALSE}
-state_data <- csv_reader(1)
+state_data <- csv_reader(3)
 state_data$Date <- ymd(state_data$Date)
 
 ```
@@ -56,16 +63,50 @@ state_data <- state_data %>%
 
 
 ```{r plotting, echo=FALSE}
+# Plot a line plot of clean energy percenatge overtime
+ggplot(state_data, aes(x=Date, y=clean_percentage))+
+  geom_line(color='darkslategray3')+
+  geom_smooth(method = 'loess', color='coral')+
+  scale_x_date(breaks=scales::breaks_pretty(10))+
+  scale_y_continuous(breaks=scales::breaks_pretty(10))+
+  labs(y= 'Clean Energy Generation %', x='Date', title='Percentage of Clean Energy Generation (%)', subtitle = '(2001.1-2023.8)')+
+  mytheme
+```
+
+```{r ts, echo=FALSE}
 f_month = month(first(state_data$Date))
 f_year = year(first(state_data$Date))
+
+clean.perc.yearly <- state_data %>%
+  mutate(Date = year(Date)) %>%
+  group_by(Date) %>%
+  summarize(clean_percentage =
+              mean(clean_percentage))
 
 clean.perc.ts <- ts(
   state_data$clean_percentage,
   start = c(f_year, f_month),
-  frequency = 12
+  frequency = 12)
 
-ggplot(state_data, aes(x=))
+clean.perc.yearly.ts <- ts(
+  clean.perc.yearly$clean_percentage,
+  start = c(f_year),
+  frequency = 1)
+
+clean.perc.arima <- auto.arima(clean.perc.ts)
+clean.perc.forecast <- forecast(clean.perc.arima, level=c(95), h=5*12)
+autoplot(clean.perc.forecast, ts.color='darkslategray3')+
+  labs(y= 'Clean Energy Generation %', x='Date', title='Percentage of Clean Energy Generation Forecast (%)', subtitle = '(2001.1-2028.8)')+
+  mytheme
+
+clean.perc.yearly.arima <- auto.arima(clean.perc.yearly.ts)
+clean.perc.yearly.forecast <- forecast(clean.perc.yearly.arima, level=c(95), h=30)
+autoplot(clean.perc.yearly.forecast, ts.color='darkslategray3')+
+  labs(y= 'Clean Energy Generation %', x='Date', title='Percentage of Clean Energy Generation Forecast (%)', subtitle = '(2001.1-2028.8)')+
+  mytheme
+
 ```
+
 
 ```{r run functions, echo=FALSE}
 
