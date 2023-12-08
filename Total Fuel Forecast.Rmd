@@ -1,0 +1,164 @@
+---
+title: "TotalGrowth"
+author: "Zhenghao Lin"
+date: "2023-12-07"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library}
+library(here)
+library(tidyverse)
+library(lubridate)
+library(trend)
+library(tseries)
+library(forecast)
+```
+
+```{r}
+csvs <- list.files(path = here('Processed'),pattern = "\\.csv$", full.names = TRUE)
+
+file_name <- c('California','combined_df', 'Connecticut', 
+               'Illinois', 'Maine', 'Michigan', 'Minnesota', 
+               'Nevada', 'New_Mexico', 'New_York', 
+               'Oregon', 'Virginia', 'Washington')
+
+names(csvs) <- file_name
+
+
+# set a theme for plots
+mytheme <- theme_bw()+
+  theme(plot.title = element_text(hjust=0.5),
+  plot.subtitle =element_text(hjust=0.5),
+  text=element_text(size=12, family='sans'),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank())
+```
+
+```{r}
+csv_reader <- function(state_name) {
+  file_i <- read.csv(csvs[[state_name]], stringsAsFactors = TRUE)
+}
+
+data_wrangler <- function(state_name){
+  state_data <- csv_reader(state_name) %>% 
+    mutate(Date = ymd(Date)) %>% 
+    replace(is.na(.),0) %>%
+    select(All.fuels, Date)
+  }
+```
+
+```{r}
+plotting_function <- function(state_name){ggplot(data_wrangler(state_name), 
+                                            aes(x=Date, y=All.fuels))+
+    geom_line(color='darkslategray3')+
+    geom_smooth(method = 'loess', color='coral')+
+    scale_x_date(breaks=scales::breaks_pretty(10))+
+    scale_y_continuous(breaks=scales::breaks_pretty(10))+
+    labs(y= 'All Fuels', x='Date', title='All Fuels', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+    mytheme
+  }
+```
+
+```{r}
+# Create a function that plots arima ts forecast 
+arima_ts <- function(state_name,t){
+  state_data <- data_wrangler(state_name)
+  f_month = month(first(state_data$Date))
+  f_year = year(first(state_data$Date))
+  all.fuel.ts <- ts(
+    state_data$All.fuels,
+    start = c(f_year, f_month),
+    frequency = 12)
+  all.fuel.arima <- auto.arima(all.fuel.ts)
+  all.fuel.forecast <- forecast(all.fuel.arima, level=c(95), h=t*12)
+  plot <- autoplot(all.fuel.forecast)+
+    labs(y= 'All Fuel', x='Date', title='All Fuel Forecast', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+    mytheme
+  last.forecast <- all.fuel.forecast$mean[length(all.fuel.forecast$mean)]
+  print(plot)
+  return(last.forecast)
+}
+```
+
+```{r}
+plotting_function('California')
+arima_ts('California', 23)
+```
+```{r}
+plotting_function('Connecticut')
+arima_ts('Connecticut', 17)
+```
+```{r}
+plotting_function('Illinois')
+arima_ts('Illinois', 27)
+```
+```{r}
+plotting_function('Maine')
+arima_ts('Maine', 27)
+```
+```{r}
+plotting_function('Michigan')
+arima_ts('Michigan', 17)
+```
+```{r}
+plotting_function('Minnesota')
+arima_ts('Minnesota', 17)
+```
+```{r}
+plotting_function('Nevada')
+arima_ts('Nevada', 27)
+```
+```{r}
+plotting_function('New_Mexico')
+arima_ts('New_Mexico', 22)
+```
+```{r}
+plotting_function('New_York')
+arima_ts('New_York', 17)
+```
+```{r}
+plotting_function('Oregon')
+arima_ts('Oregon', 17)
+```
+```{r}
+plotting_function('Virginia')
+arima_ts('Virginia', 27)
+```
+
+```{r}
+plotting_function('Washington')
+arima_ts('Washington', 22)
+```
+
+```{r}
+california <- read.csv(here('Processed/California.csv'))
+california <- california %>% 
+  mutate(Date = ymd(Date)) %>% 
+  replace(is.na(.),0) %>%
+  select(All.fuels, Date)
+caliallfuelts <- ts(california$All.fuels, start = c(2001,1),frequency = 12)
+```
+
+```{r}
+decompose <- decompose(caliallfuelts)
+plot(decompose)
+adf.test(caliallfuelts, alternative="stationary", k=0)
+```
+```{r}
+caliallfuelarima <- auto.arima(caliallfuelts)
+```
+
+```{r}
+califorecast <-  forecast(caliallfuelarima, level = c(95), h=23*12)
+plot(califorecast)
+last_cali <- califorecast$mean[length(califorecast$mean)]
+last_cali
+```
+
+
+
+
