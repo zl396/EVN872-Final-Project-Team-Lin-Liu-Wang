@@ -1,0 +1,10 @@
+---
+title: "Total Fuel Forecast"
+output: pdf_document
+date: "2023-12-08"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
