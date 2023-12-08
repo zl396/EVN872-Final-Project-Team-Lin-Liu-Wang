@@ -19,29 +19,29 @@ here()
 ```
 ```{r}
 #Import data set and drop first 4 rows
-Michigan_raw<- read.csv(file=here("Final_project/Michigan_Net_generation_for_all_sectors.csv"),
+Michigan_raw<- read.csv(file=here("Data/Michigan_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-Minnesota_raw<- read.csv(file=here("Final_project/Minnesota_Net_generation_for_all_sectors.csv"),
+Minnesota_raw<- read.csv(file=here("Data/Minnesota_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-Nevada_raw<- read.csv(file=here("Final_project/Nevada_Net_generation_for_all_sectors.csv"),
+Nevada_raw<- read.csv(file=here("Data/Nevada_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-New_Mexico_raw<- read.csv(file=here("Final_project/New_Mexico_Net_generation_for_all_sectors.csv"),
+New_Mexico_raw<- read.csv(file=here("Data/New_Mexico_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-California_raw<- read.csv(file=here("Final_project/California_Net_generation_for_all_sectors.csv"),
+California_raw<- read.csv(file=here("Data/California_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-Connecticut_raw<- read.csv(file=here("Final_project/Connecticut_Net_generation_for_all_sectors.csv"),
+Connecticut_raw<- read.csv(file=here("Data/Connecticut_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-Illinois_raw<- read.csv(file=here("Final_project/Illinois_Net_generation_for_all_sectors.csv"),
+Illinois_raw<- read.csv(file=here("Data/Illinois_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-Maine_raw<- read.csv(file=here("Final_project/Maine_Net_generation_for_all_sectors.csv"),
+Maine_raw<- read.csv(file=here("Data/Maine_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-New_York_raw<- read.csv(file=here("Final_project/New_York_Net_generation_for_all_sectors.csv"),
+New_York_raw<- read.csv(file=here("Data/New_York_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-Oregon_raw<- read.csv(file=here("Final_project/Oregon_Net_generation_for_all_sectors.csv"),
+Oregon_raw<- read.csv(file=here("Data/Oregon_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-Virginia_raw<- read.csv(file=here("Final_project/Virginia_Net_generation_for_all_sectors.csv"),
+Virginia_raw<- read.csv(file=here("Data/Virginia_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
-Washington_raw<- read.csv(file=here("Final_project/Washington_Net_generation_for_all_sectors.csv"),
+Washington_raw<- read.csv(file=here("Data/Washington_Net_generation_for_all_sectors.csv"),
            stringsAsFactors = TRUE, skip=4)
 ```
 
