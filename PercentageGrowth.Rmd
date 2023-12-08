@@ -1,0 +1,78 @@
+---
+title: "PercentageGrowth"
+author: "Lucy Wang"
+date: "2023-12-06"
+output: html_document
+---
+# Research Question: how will the percentage of clean energy generation grow for each of the 12 states? 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r packages}
+# Check working directroy
+library(here)
+
+# load packages
+library(tidyverse)
+library(lubridate)
+library(trend)
+library(zoo)
+library(Kendall)
+library(tseries)
+
+file_list <-
+  list.files(
+    '~/Documents/Team-Lin-Liu-Wang/Processed',
+    pattern = "*.csv",
+    recursive = TRUE,
+    full.names = TRUE
+  )
+
+csv_reader <- function(i) {
+  file_i <- read.csv(file_list[i], stringsAsFactors = TRUE)
+}
+
+```
+
+
+```{r run sample, echo=FALSE}
+state_data <- csv_reader(1)
+state_data$Date <- ymd(state_data$Date)
+
+```
+
+```{r calculate percentage, echo=FALSE}
+state_data <- state_data %>% 
+  replace(is.na(.),0) %>% 
+  mutate(clean_energy = nuclear+
+           conventional.hydroelectric+
+           other.renewables+
+           hydro.electric.pumped.storage+
+           other) %>% 
+  mutate(clean_percentage = clean_energy/All.fuels)
+```
+
+
+```{r plotting, echo=FALSE}
+f_month = month(first(state_data$Date))
+f_year = year(first(state_data$Date))
+
+clean.perc.ts <- ts(
+  state_data$clean_percentage,
+  start = c(f_year, f_month),
+  frequency = 12
+
+ggplot(state_data, aes(x=))
+```
+
+```{r run functions, echo=FALSE}
+
+#for (i in length(file_list)){
+#  state_data <- csv_reader(i)
+#}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
