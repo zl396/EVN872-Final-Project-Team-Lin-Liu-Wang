@@ -22,12 +22,9 @@ library(forecast)
 # select files 
 file_list <-
   list.files(
-    '~/Documents/872_Final_Project/Processed',
-    pattern = "*.csv",
-    recursive = TRUE,
-    full.names = TRUE
+    path = here('Processed'),pattern = "\\.csv$", full.names = TRUE
   )
-file_name <- c('California','combined_df', 'Conecticut', 
+file_name <- c('California','combined_df', 'Connecticut', 
                'Illinois', 'Maine', 'Michigan', 'Minnesota', 
                'Nevada', 'New_Mexico', 'New_York', 
                'Oregon', 'Virginia', 'Washington')
@@ -60,7 +57,6 @@ data_wrangler <- function(state_name){
           other.renewables+
           hydro.electric.pumped.storage+
           other) 
-    #mutate(clean_percentage = clean_energy/All.fuels)
   }
 
 ```
@@ -74,7 +70,7 @@ plotting_function <- function(state_name){ggplot(data_wrangler(state_name),
     geom_smooth(method = 'loess', color='coral')+
     scale_x_date(breaks=scales::breaks_pretty(10))+
     scale_y_continuous(breaks=scales::breaks_pretty(10))+
-    labs(y= 'Clean Energy Generation %', x='Date', title='Percentage of Clean Energy Generation (%)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+    labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation (MWh)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
     mytheme
   }
 ```
@@ -85,75 +81,78 @@ arima_ts <- function(state_name,t){
   state_data <- data_wrangler(state_name)
   f_month = month(first(state_data$Date))
   f_year = year(first(state_data$Date))
-  clean.perc.ts <- ts(
+  clean.ts <- ts(
     state_data$clean_energy,
     start = c(f_year, f_month),
     frequency = 12)
-  clean.perc.arima <- auto.arima(clean.perc.ts)
-  clean.perc.forecast <- forecast(clean.perc.arima, level=c(95), h=t*12)
-  autoplot(clean.perc.forecast)+
-    labs(y= 'Clean Energy Generation %', x='Date', title='Percentage of Clean Energy Generation Forecast (%)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+  clean.arima <- auto.arima(clean.ts)
+  clean.forecast <- forecast(clean.arima, level=c(95), h=t*12)
+  plot <- autoplot(clean.forecast)+
+    labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation Forecast (MWh)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
     mytheme
+  last.forecast <- clean.forecast$mean[length(clean.forecast$mean)]
+  print(plot)
+  return(last.forecast)
 }
 ```
 ### California 
 ```{r run functions California, echo=FALSE}
 plotting_function('California')
-arima_ts('California',10)
+arima_ts('California',23)
 ```
 ### Connecticut
 ```{r run functions Connecticut, echo=FALSE}
 plotting_function('Connecticut')
-arima_ts('Connecticut',10)
+arima_ts('Connecticut',17)
 ```
 ### Illinois
 ```{r run functions Illinois, echo=FALSE}
 plotting_function('Illinois')
-arima_ts('Illinois',10)
+arima_ts('Illinois',27)
 ```
 ### Maine
 ```{r run functions Maine, echo=FALSE}
 plotting_function('Maine')
-arima_ts('Maine',10)
+arima_ts('Maine',27)
 ```
 ### Michigan 
 ```{r run functions Michigan, echo=FALSE}
 plotting_function('Michigan')
-arima_ts('Michigan',10)
+arima_ts('Michigan',17)
 ```
 ### Minnesota
 ```{r run functions Minnesota, echo=FALSE}
 plotting_function('Minnesota')
-arima_ts('Minnesota',10)
+arima_ts('Minnesota',17)
 ```
 ### Nevada
 ```{r run functions Nevada, echo=FALSE}
 plotting_function('Nevada')
-arima_ts('Nevada',10)
+arima_ts('Nevada',27)
 ```
 ### New Mexico
 ```{r run functions New Mexico, echo=FALSE}
 plotting_function('New_Mexico')
-arima_ts('New_Mexico',10)
+arima_ts('New_Mexico',22)
 ```
 ### New York 
 ```{r run functions New York, echo=FALSE}
 plotting_function('New_York')
-arima_ts('New_York',10)
+arima_ts('New_York',17)
 ```
 ### Oregon
 ```{r run functions Oregon, echo=FALSE}
 plotting_function('Oregon')
-arima_ts('Oregon',10)
+arima_ts('Oregon',17)
 ```
 ### Virginia
 ```{r run functions Virginia, echo=FALSE}
 plotting_function('Virginia')
-arima_ts('Virginia',10)
+arima_ts('Virginia',27)
 ```
 ### Washington
 ```{r run functions Washington, echo=FALSE}
 plotting_function('Washington')
-arima_ts('Washington',10)
+arima_ts('Washington',22)
 ```
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
