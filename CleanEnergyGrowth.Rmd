@@ -94,7 +94,7 @@ arima_ts <- function(state_name,t){
     mytheme
   last.forecast <- clean.forecast$mean[length(clean.forecast$mean)]
   print(plot)
-  print(paste('The forecasted Clean Energy Generation in', last_date_forecast, 'is', last.forecast))
+  print(paste('The forecasted Clean Energy Generation in', state_name, 'in the year of', last_date_forecast, 'is', last.forecast))
   #return(last.forecast)
 }
 ```
