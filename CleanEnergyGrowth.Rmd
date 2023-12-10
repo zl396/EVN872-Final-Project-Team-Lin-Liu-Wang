@@ -78,6 +78,8 @@ plotting_function <- function(state_name){ggplot(data_wrangler(state_name),
 ```{r ts, echo=FALSE}
 # Create a function that plots arima ts forecast 
 arima_ts <- function(state_name,t){
+  last_date = 2023
+  last_date_forecast = 2023+t
   state_data <- data_wrangler(state_name)
   f_month = month(first(state_data$Date))
   f_year = year(first(state_data$Date))
@@ -88,70 +90,71 @@ arima_ts <- function(state_name,t){
   clean.arima <- auto.arima(clean.ts)
   clean.forecast <- forecast(clean.arima, level=c(95), h=t*12)
   plot <- autoplot(clean.forecast)+
-    labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation Forecast (MWh)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+    labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation Forecast (MWh)', subtitle = paste(state_name,paste('(2001 -',last_date_forecast, ')')))+
     mytheme
   last.forecast <- clean.forecast$mean[length(clean.forecast$mean)]
   print(plot)
-  return(last.forecast)
+  print(paste('The forecasted Clean Energy Generation in', last_date_forecast, 'is', last.forecast))
+  #return(last.forecast)
 }
 ```
 ### California 
-```{r run functions California, echo=FALSE}
+```{r run functions California, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('California')
 arima_ts('California',23)
 ```
 ### Connecticut
-```{r run functions Connecticut, echo=FALSE}
+```{r run functions Connecticut, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Connecticut')
 arima_ts('Connecticut',17)
 ```
 ### Illinois
-```{r run functions Illinois, echo=FALSE}
+```{r run functions Illinois, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Illinois')
 arima_ts('Illinois',27)
 ```
 ### Maine
-```{r run functions Maine, echo=FALSE}
+```{r run functions Maine, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Maine')
 arima_ts('Maine',27)
 ```
 ### Michigan 
-```{r run functions Michigan, echo=FALSE}
+```{r run functions Michigan, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Michigan')
 arima_ts('Michigan',17)
 ```
 ### Minnesota
-```{r run functions Minnesota, echo=FALSE}
+```{r run functions Minnesota, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Minnesota')
 arima_ts('Minnesota',17)
 ```
 ### Nevada
-```{r run functions Nevada, echo=FALSE}
+```{r run functions Nevada, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Nevada')
 arima_ts('Nevada',27)
 ```
 ### New Mexico
-```{r run functions New Mexico, echo=FALSE}
+```{r run functions New Mexico, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('New_Mexico')
 arima_ts('New_Mexico',22)
 ```
 ### New York 
-```{r run functions New York, echo=FALSE}
+```{r run functions New York, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('New_York')
 arima_ts('New_York',17)
 ```
 ### Oregon
-```{r run functions Oregon, echo=FALSE}
+```{r run functions Oregon, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Oregon')
 arima_ts('Oregon',17)
 ```
 ### Virginia
-```{r run functions Virginia, echo=FALSE}
+```{r run functions Virginia, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Virginia')
 arima_ts('Virginia',27)
 ```
 ### Washington
-```{r run functions Washington, echo=FALSE}
+```{r run functions Washington, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('Washington')
 arima_ts('Washington',22)
 ```
