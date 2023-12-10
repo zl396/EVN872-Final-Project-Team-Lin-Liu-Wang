@@ -13,8 +13,6 @@ date: "2023-12-08"
 \newpage
 
 ```{r setup, include=FALSE}
-# Set your working directory
-here()
 # Load your packages
 library(tidyverse)
 library(dplyr)
@@ -23,6 +21,8 @@ library(here)
 library(trend)
 library(tseries)
 library(forecast)
+# Set your working directory
+here()
 # Set your ggplot theme
 mytheme <- theme_bw()+
   theme(plot.title = element_text(hjust=0.5),
