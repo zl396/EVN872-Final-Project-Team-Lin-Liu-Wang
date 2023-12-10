@@ -1,9 +1,9 @@
 ---
-title: "872 Final Project"
+title: "Will the 100% clean energy commitment be on time?"
+author: "Zhenghao Lin, Chenjia Liu, Shuyi Wang"
 output: pdf_document
-date: "2023-12-08"
+date: "Fall 2023"
 ---
-
 \newpage
 \tableofcontents 
 \newpage
