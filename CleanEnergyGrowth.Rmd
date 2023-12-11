@@ -77,6 +77,7 @@ plotting_function <- function(state_name){ggplot(data_wrangler(state_name),
 
 ```{r ts, echo=FALSE}
 # Create a function that plots arima ts forecast 
+result.df <- data.frame(State=character(0), Forecasted.Year=integer(0), Clean.Energy.Forecast=double(0))
 arima_ts <- function(state_name,t){
   last_date = 2023
   last_date_forecast = 2023+t
@@ -93,15 +94,17 @@ arima_ts <- function(state_name,t){
     labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation Forecast (MWh)', subtitle = paste(state_name,paste('(2001 -',last_date_forecast, ')')))+
     mytheme
   last.forecast <- clean.forecast$mean[length(clean.forecast$mean)]
+  result.df[nrow(result.df) + 1,] = c(state_name, last_date_forecast, last.forecast)
+  result.df <<- result.df
   print(plot)
   print(paste('The forecasted Clean Energy Generation in', state_name, 'in the year of', last_date_forecast, 'is', last.forecast))
-  #return(last.forecast)
 }
 ```
 ### California 
 ```{r run functions California, echo=FALSE, fig.align="center", fig.width = 14}
 plotting_function('California')
 arima_ts('California',23)
+arima_ts('Connecticut',17)
 ```
 ### Connecticut
 ```{r run functions Connecticut, echo=FALSE, fig.align="center", fig.width = 14}
