@@ -418,7 +418,8 @@ arima_ts('Washington', 22)
 \newpage
 
 # Summary and Conclusions
-
+has met: Maine 
+close: Illinois 
 
 \newpage
 
