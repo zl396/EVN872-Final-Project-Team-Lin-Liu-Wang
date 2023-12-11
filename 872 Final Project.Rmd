@@ -322,26 +322,7 @@ knitr::kable(EIA_data_summary,caption = "Table summarizing the dataset structure
 \newpage
 
 # Exploratory Analysis 
-```{r}
-california <- read.csv(here('Processed/California.csv'))
-california <- california %>% 
-  mutate(Date = ymd(Date)) %>% 
-  replace(is.na(.),0) %>%
-  select(All.fuels, Date)
-caliallfuelts <- ts(california$All.fuels, start = c(2001,1),frequency = 12)
-```
-
-```{r}
-decompose <- decompose(caliallfuelts)
-plot(decompose)
-adf.test(caliallfuelts, alternative="stationary", k=0)
-```
-
-
-\newpage
-
-# Analysis
-```{r}
+```{r funtioncs}
 csvs <- list.files(path = here('Processed'),pattern = "\\.csv$", full.names = TRUE)
 
 file_name <- c('California','combined_df', 'Connecticut', 
@@ -351,31 +332,45 @@ file_name <- c('California','combined_df', 'Connecticut',
 
 names(csvs) <- file_name
 
-
-# set a theme for plots
-mytheme <- theme_bw()+
-  theme(plot.title = element_text(hjust=0.5),
-  plot.subtitle =element_text(hjust=0.5),
-  text=element_text(size=12, family='sans'),
-  panel.grid.minor = element_blank(),
-  panel.grid.major = element_blank())
-```
-
-```{r}
+#create a function that read csv files
 csv_reader <- function(state_name) {
   file_i <- read.csv(csvs[[state_name]], stringsAsFactors = TRUE)
 }
 
-data_wrangler <- function(state_name){
+# create a function that wrangles data, add a column for total energy generations
+data_all <- function(state_name){
   state_data <- csv_reader(state_name) %>% 
     mutate(Date = ymd(Date)) %>% 
     replace(is.na(.),0) %>%
     select(All.fuels, Date)
-  }
-```
+}
 
-```{r}
-plotting_function <- function(state_name){ggplot(data_wrangler(state_name), 
+data_clean <- function(state_name){
+  state_data <- csv_reader(state_name) %>% 
+    mutate(Date = ymd(Date)) %>% 
+    replace(is.na(.),0) %>% 
+    mutate(clean_energy = nuclear+
+          conventional.hydroelectric+
+          other.renewables+
+          hydro.electric.pumped.storage+
+          other) %>%
+    select(clean_energy, Date)
+  }
+
+# Create a function that plots energy generation percentages  
+plot_clean <- function(state_name){ggplot(data_clean(state_name), 
+                                            aes(x=Date, y=clean_energy))+
+    geom_line(color='lightgreen')+
+    geom_smooth(method = 'loess', color='brown')+
+    scale_x_date(breaks=scales::breaks_pretty(10))+
+    scale_y_continuous(breaks=scales::breaks_pretty(10))+
+    labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation (MWh)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+    mytheme
+  }
+  
+  
+
+plot_all <- function(state_name){ggplot(data_all(state_name), 
                                             aes(x=Date, y=All.fuels))+
     geom_line(color='darkslategray3')+
     geom_smooth(method = 'loess', color='coral')+
@@ -383,20 +378,322 @@ plotting_function <- function(state_name){ggplot(data_wrangler(state_name),
     scale_y_continuous(breaks=scales::breaks_pretty(10))+
     labs(y= 'All Fuels', x='Date', title='All Fuels', subtitle = paste(state_name,'(2001.1-2023.8)'))+
     mytheme
-  }
+}
+```
+
+```{r, EA CA}
+california <- csv_reader('California')
+
+#CA clean energy
+CA.clean <- data_clean('California')
+#CA.clean graph
+plot_clean('California')
+#CA.clean TS
+CA.clean.ts <- ts(CA.clean$clean_energy, start = c(2001,1),frequency = 12)
+decompose.clean <- decompose(CA.clean.ts)
+plot(decompose.clean)
+adf.test(CA.clean.ts, alternative="stationary", k=0)
+
+
+#CA.all
+CA.all <-data_all('California')
+#CA.all graph
+plot_all("California")
+#CA.all TS
+CA.all.ts <- ts(CA.all$All.fuels, start = c(2001,1),frequency = 12)
+decompose <- decompose(CA.all.ts)
+plot(decompose)
+adf.test(CA.all.ts, alternative="stationary", k=0)
 ```
 
 ```{r}
-# Create a function that plots arima ts forecast 
-arima_ts <- function(state_name,t){
-  state_data <- data_wrangler(state_name)
+connecticut <- csv_reader('Connecticut')
+
+# CT clean energy
+CT.clean <- data_clean('Connecticut')
+# CT clean graph
+plot_clean('Connecticut')
+# CT clean TS
+CT.clean.ts <- ts(CT.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(CT.clean.ts)
+plot(decompose.clean)
+adf.test(CT.clean.ts, alternative = "stationary", k = 0)
+
+# CT all
+CT.all <- data_all('Connecticut')
+# CT all graph
+plot_all("Connecticut")
+# CT all TS
+CT.all.ts <- ts(CT.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(CT.all.ts)
+plot(decompose)
+adf.test(CT.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+illinois <- csv_reader('Illinois')
+
+# IL clean energy
+IL.clean <- data_clean('Illinois')
+# IL clean graph
+plot_clean('Illinois')
+# IL clean TS
+IL.clean.ts <- ts(IL.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(IL.clean.ts)
+plot(decompose.clean)
+adf.test(IL.clean.ts, alternative = "stationary", k = 0)
+
+# IL all
+IL.all <- data_all('Illinois')
+# IL all graph
+plot_all("Illinois")
+# IL all TS
+IL.all.ts <- ts(IL.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(IL.all.ts)
+plot(decompose)
+adf.test(IL.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+maine <- csv_reader('Maine')
+
+# Maine clean energy
+ME.clean <- data_clean('Maine')
+# Maine clean graph
+plot_clean('Maine')
+# Maine clean TS
+ME.clean.ts <- ts(ME.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(ME.clean.ts)
+plot(decompose.clean)
+adf.test(ME.clean.ts, alternative = "stationary", k = 0)
+
+# Maine all
+ME.all <- data_all('Maine')
+# Maine all graph
+plot_all("Maine")
+# Maine all TS
+ME.all.ts <- ts(ME.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(ME.all.ts)
+plot(decompose)
+adf.test(ME.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+michigan <- csv_reader('Michigan')
+
+# MI clean energy
+MI.clean <- data_clean('Michigan')
+# MI clean graph
+plot_clean('Michigan')
+# MI clean TS
+MI.clean.ts <- ts(MI.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(MI.clean.ts)
+plot(decompose.clean)
+adf.test(MI.clean.ts, alternative = "stationary", k = 0)
+
+# MI all
+MI.all <- data_all('Michigan')
+# MI all graph
+plot_all("Michigan")
+# MI all TS
+MI.all.ts <- ts(MI.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(MI.all.ts)
+plot(decompose)
+adf.test(MI.all.ts, alternative = "stationary", k = 0)
+```
+```{r}
+minnesota <- csv_reader('Minnesota')
+
+# MN clean energy
+MN.clean <- data_clean('Minnesota')
+# MN clean graph
+plot_clean('Minnesota')
+# MN clean TS
+MN.clean.ts <- ts(MN.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(MN.clean.ts)
+plot(decompose.clean)
+adf.test(MN.clean.ts, alternative = "stationary", k = 0)
+
+# MN all
+MN.all <- data_all('Minnesota')
+# MN all graph
+plot_all("Minnesota")
+# MN all TS
+MN.all.ts <- ts(MN.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(MN.all.ts)
+plot(decompose)
+adf.test(MN.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+nevada <- csv_reader('Nevada')
+
+# NV clean energy
+NV.clean <- data_clean('Nevada')
+# NV clean graph
+plot_clean('Nevada')
+# NV clean TS
+NV.clean.ts <- ts(NV.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(NV.clean.ts)
+plot(decompose.clean)
+adf.test(NV.clean.ts, alternative = "stationary", k = 0)
+
+# NV all
+NV.all <- data_all('Nevada')
+# NV all graph
+plot_all("Nevada")
+# NV all TS
+NV.all.ts <- ts(NV.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(NV.all.ts)
+plot(decompose)
+adf.test(NV.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+new_mexico <- csv_reader('New_Mexico')
+
+# NM clean energy
+NM.clean <- data_clean('New_Mexico')
+# NM clean graph
+plot_clean('New_Mexico')
+# NM clean TS
+NM.clean.ts <- ts(NM.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(NM.clean.ts)
+plot(decompose.clean)
+adf.test(NM.clean.ts, alternative = "stationary", k = 0)
+
+# NM all
+NM.all <- data_all('New_Mexico')
+# NM all graph
+plot_all("New_Mexico")
+# NM all TS
+NM.all.ts <- ts(NM.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(NM.all.ts)
+plot(decompose)
+adf.test(NM.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+new_york <- csv_reader('New_York')
+
+# NY clean energy
+NY.clean <- data_clean('New_York')
+# NY clean graph
+plot_clean('New_York')
+# NY clean TS
+NY.clean.ts <- ts(NY.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(NY.clean.ts)
+plot(decompose.clean)
+adf.test(NY.clean.ts, alternative = "stationary", k = 0)
+
+# NY all
+NY.all <- data_all('New_York')
+# NY all graph
+plot_all("New_York")
+# NY all TS
+NY.all.ts <- ts(NY.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(NY.all.ts)
+plot(decompose)
+adf.test(NY.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+oregon <- csv_reader('Oregon')
+
+# OR clean energy
+OR.clean <- data_clean('Oregon')
+# OR clean graph
+plot_clean('Oregon')
+# OR clean TS
+OR.clean.ts <- ts(OR.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(OR.clean.ts)
+plot(decompose.clean)
+adf.test(OR.clean.ts, alternative = "stationary", k = 0)
+
+# OR all
+OR.all <- data_all('Oregon')
+# OR all graph
+plot_all("Oregon")
+# OR all TS
+OR.all.ts <- ts(OR.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(OR.all.ts)
+plot(decompose)
+adf.test(OR.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+virginia <- csv_reader('Virginia')
+
+# VA clean energy
+VA.clean <- data_clean('Virginia')
+# VA clean graph
+plot_clean('Virginia')
+# VA clean TS
+VA.clean.ts <- ts(VA.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(VA.clean.ts)
+plot(decompose.clean)
+adf.test(VA.clean.ts, alternative = "stationary", k = 0)
+
+# VA all
+VA.all <- data_all('Virginia')
+# VA all graph
+plot_all("Virginia")
+# VA all TS
+VA.all.ts <- ts(VA.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(VA.all.ts)
+plot(decompose)
+adf.test(VA.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+washington <- csv_reader('Washington')
+
+# WA clean energy
+WA.clean <- data_clean('Washington')
+# WA clean graph
+plot_clean('Washington')
+# WA clean TS
+WA.clean.ts <- ts(WA.clean$clean_energy, start = c(2001, 1), frequency = 12)
+decompose.clean <- decompose(WA.clean.ts)
+plot(decompose.clean)
+adf.test(WA.clean.ts, alternative = "stationary", k = 0)
+
+# WA all
+WA.all <- data_all('Washington')
+# WA all graph
+plot_all("Washington")
+# WA all TS
+WA.all.ts <- ts(WA.all$All.fuels, start = c(2001, 1), frequency = 12)
+decompose <- decompose(WA.all.ts)
+plot(decompose)
+adf.test(WA.all.ts, alternative = "stationary", k = 0)
+```
+
+```{r}
+statets_clean <- function(state_name){
+  state_data <- data_clean(state_name)
+  f_month = month(first(state_data$Date))
+  f_year = year(first(state_data$Date))
+  clean.fuel.ts <- ts(
+    state_data$clean_energy,
+    start = c(f_year, f_month),
+    frequency = 12)
+  return(clean.fuel.ts)
+}
+
+statets_all <- function(state_name){
+  state_data <- data_all(state_name)
   f_month = month(first(state_data$Date))
   f_year = year(first(state_data$Date))
   all.fuel.ts <- ts(
     state_data$All.fuels,
     start = c(f_year, f_month),
     frequency = 12)
-  all.fuel.arima <- auto.arima(all.fuel.ts)
+  return(all.fuel.ts)
+}
+
+arima.all <- function(state_name,t){
+  all.fuel.arima <- auto.arima(statets_all(state_name))
   all.fuel.forecast <- forecast(all.fuel.arima, level=c(95), h=t*12)
   plot <- autoplot(all.fuel.forecast)+
     labs(y= 'All Fuel', x='Date', title='All Fuel Forecast', subtitle = paste(state_name,'(2001.1-2023.8)'))+
@@ -405,55 +702,69 @@ arima_ts <- function(state_name,t){
   print(plot)
   return(last.forecast)
 }
+
+arima.clean <- function(state_name,t){
+  clean.arima <- auto.arima(statets_clean(state_name))
+  clean.forecast <- forecast(clean.arima, level=c(95), h=t*12)
+  plot <- autoplot(clean.forecast)+
+    labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation Forecast (MWh)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+    mytheme
+  last.forecast <- clean.forecast$mean[length(clean.forecast$mean)]
+  print(plot)
+  return(last.forecast)
+}
 ```
 
 ```{r}
-plotting_function('California')
-arima_ts('California', 23)
+arima.all('California', 23)
+arima.clean('California', 23)
 ```
 ```{r}
-plotting_function('Connecticut')
-arima_ts('Connecticut', 17)
+arima.all('Connecticut', 17)
+arima.clean('Connecticut', 17)
+
 ```
 ```{r}
-plotting_function('Illinois')
-arima_ts('Illinois', 27)
+arima.all('Illinois', 27)
+arima.clean('Illinois', 27)
 ```
 ```{r}
-plotting_function('Maine')
-arima_ts('Maine', 27)
+arima.all('Maine', 27)
+arima.clean('Maine', 27)
 ```
 ```{r}
-plotting_function('Michigan')
-arima_ts('Michigan', 17)
+arima.all('Michigan', 17)
+arima.clean('Michigan', 17)
 ```
 ```{r}
-plotting_function('Minnesota')
-arima_ts('Minnesota', 17)
+arima.all('Minnesota', 17)
+arima.clean('Minnesota', 17)
 ```
 ```{r}
-plotting_function('Nevada')
-arima_ts('Nevada', 27)
+arima.all('Nevada', 27)
+arima.clean('Nevada', 27)
 ```
 ```{r}
-plotting_function('New_Mexico')
-arima_ts('New_Mexico', 22)
+arima.all('New_Mexico', 22)
+arima.clean('New_Mexico', 22)
 ```
 ```{r}
-plotting_function('New_York')
-arima_ts('New_York', 17)
+arima.all('New_York', 17)
+arima.clean('New_York', 17)
 ```
 ```{r}
-plotting_function('Oregon')
-arima_ts('Oregon', 17)
+arima.all('Oregon', 17)
+arima.clean('Oregon', 17)
 ```
 ```{r}
-plotting_function('Virginia')
-arima_ts('Virginia', 27)
+arima.all('Virginia', 27)
+arima.clean('Virginia', 27)
 ```
 ```{r}
-plotting_function('Washington')
-arima_ts('Washington', 22)
+arima.all('Washington', 22)
+arima.clean('Washington', 22)
+```
+
 ```
 
 
