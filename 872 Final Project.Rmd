@@ -312,7 +312,7 @@ EIA_data_summary<-data.frame(
          "thousand megawatthours",
          "thousand megawatthours",
          "thousand megawatthours",
-         "day-montth-year",
+         "day-month-year",
          "Michigan, Minnesota, Nevada, New_Mexico, California, Connecticut,  Illinois, Maine, New_York, Oregon, Virginia, Washington")
 )
 knitr::kable(EIA_data_summary,caption = "Table summarizing the dataset structure")
