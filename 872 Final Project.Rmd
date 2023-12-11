@@ -12,7 +12,16 @@ date: "Fall 2023"
 \listoffigures 
 \newpage
 
+```{r include = FALSE}
+knitr::opts_chunk$set(echo=FALSE)
+```
+
 ```{r setup, include=FALSE}
+
+# Set your working directory
+library(here)
+here()
+
 # Load your packages
 library(tidyverse)
 library(dplyr)
@@ -249,8 +258,15 @@ combined_df <- rbind(Michigan, Minnesota, Nevada, New_Mexico, California, Connec
 ```
 
 # Rationale and Research Questions
+## Introduction
+In addition to the”Renewable Energy Portfolios” (RPS) that requires certain percentages of energy to be generated from renewable energy sources, many states have enacted “Clean Energy Standards” (CES) that separates clean energy sources that are carbon-free or carbon-neutral from renewable sources which may generate carbon emissions (2021). Under CES, clean energy sources include nuclear, hydropower, solar power, wind, and other renewables. Most CES would include RPS as a part of the policy. 
 
+Currently, there are 12 states that have established 100% Clean energy goals though their times vary. In this analysis, we are interested in whether those states are able able to meet their clean energy commitments by the planned years under current development. The objective is to understand the clean energy development trends in different states in the past and the future, and which states should accelerate their clean energy transitions more rapidly than others. Therefore, the electricity generation data for each of the 12 states from EIA are chosen for the quantitative analysis. Our research questions revolves around the comparison between the growth of clean energy generation versus the growth of total energy generation in the 12 states. 
 
+## Research Questions
+1. What would the trend of clean energy generation be until the commitment years for each of the 12 states? 
+2. What would the trend of total energy generation be until the commitment years for each of the 12 states?
+3. How does the clean energy generation growth compare to the total energy generation growth? (Does clean eenrgy generation meet total energy geenration?)
 
 \newpage
 
@@ -778,9 +794,11 @@ arima.clean('Washington', 22)
 \newpage
 
 # Summary and Conclusions
-
+has met: Maine 
+close: Illinois 
 
 \newpage
 
 # References
+Brief state renewable portfolio standards and goals. National Conference of State Legislatures. (2021, August 31). https://www.ncsl.org/energy/state-renewable-portfolio-standards-and-goals 
 <add references here if relevant, otherwise delete this section> 
