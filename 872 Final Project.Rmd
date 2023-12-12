@@ -691,6 +691,7 @@ adf.test(WA.all.ts, alternative = "stationary", k = 0)
 # Analysis 
 To compare the future trend of clean energy and total energy generation, we choose to use ARIMA model to forecast the future trends. The ARIMA model captures the patterns, seasonality, and trends of the data, which is particularly useful for forecasting future values that are correlated with past values. 
 ```{r time series, echo=FALSE}
+# ts function
 statets_clean <- function(state_name){
   state_data <- data_clean(state_name)
   f_month = month(first(state_data$Date))
@@ -713,13 +714,13 @@ statets_all <- function(state_name){
   return(all.fuel.ts)
 }
 
-
+# create lists for result dataframe 
 State <- c()
 Forecasted.Year <- c()
 All.Energy.Forecast <- c()
 Clean.Energy.Forecast <- c()
 
-  
+#ARIMA forecasting
 arima.all <- function(state_name,t){
   all.fuel.arima <- auto.arima(statets_all(state_name))
   all.fuel.forecast <- forecast(all.fuel.arima, level=c(95), h=t*12)
@@ -855,6 +856,7 @@ arima.all('Washington',22)
 
 ## Question 3: How does the clean energy generation growth compare to the total energy generation growth? (Does clean energy generation meet total energy generation?)
 ```{r Result, echo=FALSE}
+#display result table 
 result.df <- data.frame(State=State, 
                         Forecasted.Year=Forecasted.Year, 
                         Clean.Energy.Forecast=Clean.Energy.Forecast, 
