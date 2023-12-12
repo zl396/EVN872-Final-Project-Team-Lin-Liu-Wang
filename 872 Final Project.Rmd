@@ -23,6 +23,7 @@ library(here)
 here()
 
 # Load your packages
+library(rlist)
 library(tidyverse)
 library(dplyr)
 library(lubridate)
@@ -266,7 +267,7 @@ Currently, there are 12 states that have established 100% Clean energy goals tho
 ## Research Questions
 1. What would the trend of clean energy generation be until the commitment years for each of the 12 states? 
 2. What would the trend of total energy generation be until the commitment years for each of the 12 states?
-3. How does the clean energy generation growth compare to the total energy generation growth? (Does clean eenrgy generation meet total energy geenration?)
+3. How does the clean energy generation growth compare to the total energy generation growth? (Does clean eenrgy generation meet total energy generation?)
 
 \newpage
 
@@ -685,6 +686,9 @@ plot(decompose)
 adf.test(WA.all.ts, alternative = "stationary", k = 0)
 ```
 
+\newpage
+
+# Analysis 
 ```{r}
 statets_clean <- function(state_name){
   state_data <- data_clean(state_name)
@@ -708,15 +712,28 @@ statets_all <- function(state_name){
   return(all.fuel.ts)
 }
 
+
+State <- c()
+Forecasted.Year <- c()
+All.Energy.Forecast <- c()
+Clean.Energy.Forecast <- c()
+
+  
 arima.all <- function(state_name,t){
   all.fuel.arima <- auto.arima(statets_all(state_name))
   all.fuel.forecast <- forecast(all.fuel.arima, level=c(95), h=t*12)
+  last_date_forecast = 2023+t 
   plot <- autoplot(all.fuel.forecast)+
-    labs(y= 'All Fuel', x='Date', title='All Fuel Forecast', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+    labs(y= 'All Fuel', x='Date', title='All Fuel Forecast', subtitle = paste(state_name, paste('(2001 -',last_date_forecast, ')')))+
     mytheme
   last.forecast <- all.fuel.forecast$mean[length(all.fuel.forecast$mean)]
+  State <- list.append(State, state_name)
+  State <<- State
+  Forecasted.Year <- list.append(Forecasted.Year, last_date_forecast)
+  Forecasted.Year <<- Forecasted.Year
+  All.Energy.Forecast <- list.append(All.Energy.Forecast, last.forecast)
+  All.Energy.Forecast <<- All.Energy.Forecast
   print(plot)
-  return(last.forecast)
 }
 
 arima.clean <- function(state_name,t){
@@ -726,70 +743,56 @@ arima.clean <- function(state_name,t){
     labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation Forecast (MWh)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
     mytheme
   last.forecast <- clean.forecast$mean[length(clean.forecast$mean)]
+  Clean.Energy.Forecast <- list.append(Clean.Energy.Forecast, last.forecast)
+  Clean.Energy.Forecast <<- Clean.Energy.Forecast
   print(plot)
-  return(last.forecast)
 }
 ```
 
-```{r}
-arima.all('California', 23)
+## Research Question 1
+What would the trend of clean energy generation be until the commitment years for each of the 12 states? 
+```{r Clean Forecast, echo=FALSE, fig.align='center', fig.width=14}
 arima.clean('California', 23)
-```
-```{r}
-arima.all('Connecticut', 17)
 arima.clean('Connecticut', 17)
-
-```
-```{r}
-arima.all('Illinois', 27)
 arima.clean('Illinois', 27)
-```
-```{r}
-arima.all('Maine', 27)
 arima.clean('Maine', 27)
-```
-```{r}
-arima.all('Michigan', 17)
 arima.clean('Michigan', 17)
-```
-```{r}
-arima.all('Minnesota', 17)
 arima.clean('Minnesota', 17)
-```
-```{r}
-arima.all('Nevada', 27)
 arima.clean('Nevada', 27)
-```
-```{r}
-arima.all('New_Mexico', 22)
 arima.clean('New_Mexico', 22)
-```
-```{r}
-arima.all('New_York', 17)
 arima.clean('New_York', 17)
-```
-```{r}
-arima.all('Oregon', 17)
 arima.clean('Oregon', 17)
-```
-```{r}
-arima.all('Virginia', 27)
 arima.clean('Virginia', 27)
-```
-```{r}
-arima.all('Washington', 22)
 arima.clean('Washington', 22)
 ```
 
+## Research Question 2
+What would the trend of total energy generation be until the commitment years for each of the 12 states?
+```{r All Forecast, echo=FALSE}
+arima.all('California', 23)
+arima.all('Connecticut', 17)
+arima.all('Illinois', 27)
+arima.all('Maine', 27)
+arima.all('Michigan', 17)
+arima.all('Minnesota', 17)
+arima.all('Nevada', 27)
+arima.all('New_Mexico', 22)
+arima.all('New_York', 17)
+arima.all('Oregon', 17)
+arima.all('Virginia', 27)
+arima.all('Washington', 22)
 ```
 
+## Research Question 3
+How does the clean energy generation growth compare to the total energy generation growth? (Does clean eenrgy generation meet total energy generation?)
+```{r Result, echo=FALSE}
+result.df <- data.frame(State=State, 
+                        Forecasted.Year=Forecasted.Year, 
+                        Clean.Energy.Forecast=Clean.Energy.Forecast, 
+                        All.Energy.Forecast=All.Energy.Forecast)
 
-## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
-
-## Question 2: 
-
-
-
+knitr::kable(result.df)
+```
 
 \newpage
 
