@@ -2,6 +2,7 @@
 title: "Will the 100% clean energy commitment be on time?"
 author: "Zhenghao Lin, Chenjia Liu, Shuyi Wang"
 output: pdf_document
+subtitle: https://github.com/zl396/EVN872-Final-Project-Team-Lin-Liu-Wang
 date: "Fall 2023"
 ---
 \newpage
@@ -337,7 +338,7 @@ knitr::kable(EIA_data_summary,caption = "Table summarizing the dataset structure
 
 # Exploratory Analysis 
 In this exploratory analysis, we will investigate the net generation data of clean energy and total electricity generation across 12 states. Our objective is to examine whether these time series datasets exhibit any obvious trends or seasonality patterns from January 2001 to August 2023. Here we will first generate the graphs of both clean energy and total electricity generation to observe any obvious trend, then decompose the graphes to see more detailed trend and seasonality display. We will also use Augmented Dickey Fuller test to find out whether the graph is stationary so that we can continue our projection process. Understanding these patterns is crucial as they can significantly impact the accuracy of our future forecasts.
-```{r funtioncs}
+```{r funtioncs, echo=FALSE}
 csvs <- list.files(path = here('Processed'),pattern = "\\.csv$", full.names = TRUE)
 
 file_name <- c('California','combined_df', 'Connecticut', 
@@ -406,7 +407,7 @@ decomp.plot <- function(x, main, ...)
 }
 ```
 
-##California
+## California
 
 Below are the plots of clean energy and total electricity generation of state California. we can see that both plots are experiencing a concave-down curve before 2012 and an increase after. However, the increasing trend of clean energy electricity generation after 2012 is way stronger than the total generation one.
 ```{r, EA CA, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State California, 01/2001~08/2023'}
@@ -444,7 +445,7 @@ adf.test(CA.all.ts, alternative="stationary", k=0)
 ```
 From the tests, we can tell that the p-values of both data are smaller than the signifance level, indicating that both data are stationary.
 
-##Connecticut
+## Connecticut
 
 Below are the plots of clean energy and total electricity generation of state Connecticut. While the clean energy generation in the past two decades has stayed at the same level, there is an clear increase for the all fuel electricity generation plots.
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State Connecticut, 01/2001~08/2023'}
@@ -483,7 +484,7 @@ adf.test(CT.all.ts, alternative="stationary", k=0)
 ```
 From the tests, we can tell that the p-values of both data are smaller than the signifance level, indicating that both data are stationary.
 
-##Illinois
+## Illinois
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State Illinois, 01/2001~08/2023'}
 illinois <- csv_reader('Illinois')
 
@@ -520,7 +521,7 @@ adf.test(IL.all.ts, alternative="stationary", k=0)
 ```
 From the tests, we can tell that the p-values of both data are smaller than the signifance level, indicating that both data are stationary.
 
-##Summary of Exploratory Analysis
+## Summary of Exploratory Analysis
 Above are the plots and results of three states that we randomly chose as example to perform the exploratory analysis.
 For the purpose of conciseness of our analysis, we will put the results of the rest 9 states in the Appendix page at the end. 
 For the rest 9 states, while trend varies with state and fuels for electricity generation, they all exhibit strong seasonality. However, when performing AD-Fuller tests under all the scenarios, all of the p-values are below significant level, thus indicating stationarity. 
@@ -782,32 +783,32 @@ decomp.plot(decompose.all.mi,'Decomposition of time series of total electricity 
 adf.test(MI.clean.ts, alternative="stationary", k=0)
 adf.test(MI.all.ts, alternative="stationary", k=0)
 ```
-##Minnesota
+## Minnesota
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State Minnesota, 01/2001~08/2023'}
 minnesota <- csv_reader('Minnesota')
 
-# MI clean energy
+# MN clean energy
 MN.clean <- data_clean('Minnesota')
 # MI clean graph
 plot.clean.mn <- plot_clean('Minnesota')
 
-# MI all
+# MN all
 MN.all <- data_all('Minnesota')
-# MI all graph
+# MN all graph
 plot.all.mn <-plot_all("Minnesota")
 
 combined.plot.mn <- grid.arrange(plot.clean.mn, plot.all.mn, ncol = 2)
 ```
 
 ```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, Clean Energy, Minnesota'}
-# MI clean TS
+# MN clean TS
 MN.clean.ts <- ts(ME.clean$clean_energy, start = c(2001, 1), frequency = 12)
 decompose.clean.mn <- decompose(MN.clean.ts)
 decomp.plot(decompose.clean.mn, main = 'Decomposition of time series of clean energy electricity generation in MN')
 ```
 
 ```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, Clean Energy, Maine'}
-# MI all TS
+# MN all TS
 MN.all.ts <- ts(MN.all$All.fuels, start = c(2001, 1), frequency = 12)
 decompose.all.mn <- decompose(MN.all.ts)
 decomp.plot(decompose.all.mn,'Decomposition of time series of total electricity generation in MN')
@@ -818,32 +819,32 @@ adf.test(MN.clean.ts, alternative="stationary", k=0)
 adf.test(MN.all.ts, alternative="stationary", k=0)
 ```
 
-##Nevada
+## Nevada
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State Nevada, 01/2001~08/2023'}
 nevada <- csv_reader('Nevada')
 
-# Maine clean energy
+# Nevada clean energy
 NV.clean <- data_clean('Nevada')
-# Maine clean graph
+# Nevada clean graph
 plot.clean.nv <- plot_clean('Nevada')
 
-# Maine all
+# Nevada all
 NV.all <- data_all('Nevada')
-# Maine all graph
+# Nevada all graph
 plot.all.nv <-plot_all("Nevada")
 
 combined.plot.nv <- grid.arrange(plot.clean.nv, plot.all.nv, ncol = 2)
 ```
 
 ```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, Clean Energy, Nevada'}
-# Maine clean TS
+# Nevada clean TS
 NV.clean.ts <- ts(NV.clean$clean_energy, start = c(2001, 1), frequency = 12)
 decompose.clean.NV <- decompose(NV.clean.ts)
 decomp.plot(decompose.clean.NV, main = 'Decomposition of time series of clean energy electricity generation in NV')
 ```
 
-```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, Clean Energy, Maine'}
-# Maine all TS
+```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, Clean Energy, Nevada'}
+# Nevada all TS
 NV.all.ts <- ts(NV.all$All.fuels, start = c(2001, 1), frequency = 12)
 decompose.all.NV <- decompose(NV.all.ts)
 decomp.plot(decompose.all.NV,'Decomposition of time series of total electricity generation in NV')
@@ -854,7 +855,7 @@ adf.test(NV.clean.ts, alternative="stationary", k=0)
 adf.test(NV.all.ts, alternative="stationary", k=0)
 ```
 
-##New Mexico
+## New Mexico
 
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State New Mexico, 01/2001~08/2023'}
 new_mexico <- csv_reader('New_Mexico')
@@ -891,7 +892,7 @@ adf.test(NM.clean.ts, alternative="stationary", k=0)
 adf.test(NM.all.ts, alternative="stationary", k=0)
 ```
 
-##New York
+## New York
 
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State New York, 01/2001~08/2023'}
 New_York <- csv_reader('New_York')
@@ -928,7 +929,7 @@ adf.test(NY.clean.ts, alternative="stationary", k=0)
 adf.test(NY.all.ts, alternative="stationary", k=0)
 ```
 
-##Oregon
+## Oregon
 
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State Oregon, 01/2001~08/2023'}
 Oregon <- csv_reader('Oregon')
@@ -965,7 +966,7 @@ adf.test(OR.clean.ts, alternative="stationary", k=0)
 adf.test(OR.all.ts, alternative="stationary", k=0)
 ```
 
-##Virginia
+## Virginia
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State Virginia, 01/2001~08/2023'}
 Virginia <- csv_reader('Virginia')
 
@@ -1001,7 +1002,7 @@ adf.test(VA.clean.ts, alternative="stationary", k=0)
 adf.test(VA.all.ts, alternative="stationary", k=0)
 ```
 
-##Washington
+## Washington
 
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State Washington, 01/2001~08/2023'}
 Washington <- csv_reader('Washington')
