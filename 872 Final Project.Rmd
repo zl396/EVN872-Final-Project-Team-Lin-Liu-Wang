@@ -751,7 +751,7 @@ arima.clean <- function(state_name,t){
 ```
 
 ## Question 1: What would the trend of clean energy generation be until the commitment years for each of the 12 states? 
-The following line charts depicts the forecasted trend until each state's commitment year: 
+The following line charts depicts the forecast trend of clean energy generation until each state's commitment year: 
 
 ### California 
 ```{r Clean Forecast California, echo=FALSE, fig.align='center', fig.width=14}
@@ -803,20 +803,7 @@ arima.clean('Washington',22)
 ```
 
 ## Question 2: What would the trend of total energy generation be until the commitment years for each of the 12 states?
-```{r All Forecast, echo=FALSE}
-arima.all('California', 23)
-arima.all('Connecticut', 17)
-arima.all('Illinois', 27)
-arima.all('Maine', 27)
-arima.all('Michigan', 17)
-arima.all('Minnesota', 17)
-arima.all('Nevada', 27)
-arima.all('New_Mexico', 22)
-arima.all('New_York', 17)
-arima.all('Oregon', 17)
-arima.all('Virginia', 27)
-arima.all('Washington', 22)
-```
+The following line charts depicts the forecast trend of total energy generation until each state's commitment year: 
 ### California 
 ```{r All Forecast California, echo=FALSE, fig.align='center', fig.width=14}
 arima.all('California', 23)
@@ -866,7 +853,7 @@ arima.all('Virginia',27)
 arima.all('Washington',22)
 ```
 
-## Question 3: How does the clean energy generation growth compare to the total energy generation growth? (Does clean eenrgy generation meet total energy generation?)
+## Question 3: How does the clean energy generation growth compare to the total energy generation growth? (Does clean energy generation meet total energy generation?)
 ```{r Result, echo=FALSE}
 result.df <- data.frame(State=State, 
                         Forecasted.Year=Forecasted.Year, 
@@ -880,7 +867,6 @@ knitr::kable(result.df)
 
 # Summary and Conclusions
 Out of the 12 states that have committed to 100% clean energy goals, only Maine is projected to be able to meet the goal. All other states will likely to fail to meet their commitments, though Illinois is close to meet the goal. 
-
 
 \newpage
 
