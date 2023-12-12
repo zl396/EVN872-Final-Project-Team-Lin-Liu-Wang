@@ -689,7 +689,8 @@ adf.test(WA.all.ts, alternative = "stationary", k = 0)
 \newpage
 
 # Analysis 
-```{r}
+To compare the future trend of clean energy and total energy generation, we choose to use ARIMA model to forecast the future trends. The ARIMA model captures the patterns, seasonality, and trends of the data, which is particularly useful for forecasting future values that are correlated with past values. 
+```{r time series, echo=FALSE}
 statets_clean <- function(state_name){
   state_data <- data_clean(state_name)
   f_month = month(first(state_data$Date))
@@ -749,25 +750,59 @@ arima.clean <- function(state_name,t){
 }
 ```
 
-## Research Question 1
-What would the trend of clean energy generation be until the commitment years for each of the 12 states? 
-```{r Clean Forecast, echo=FALSE, fig.align='center', fig.width=14}
+## Question 1: What would the trend of clean energy generation be until the commitment years for each of the 12 states? 
+The following line charts depicts the forecasted trend until each state's commitment year: 
+
+### California 
+```{r Clean Forecast California, echo=FALSE, fig.align='center', fig.width=14}
 arima.clean('California', 23)
+```
+### Connecticut 
+```{r Clean Forecast Connecticut, echo=FALSE, fig.align='center', fig.width=14}
 arima.clean('Connecticut', 17)
+```
+### Illinois 
+```{r Clean Forecast Illinois, echo=FALSE, fig.align='center', fig.width=14}
 arima.clean('Illinois', 27)
+```
+### Maine 
+```{r Clean Forecast Maine, echo=FALSE, fig.align='center', fig.width=14}
 arima.clean('Maine', 27)
-arima.clean('Michigan', 17)
-arima.clean('Minnesota', 17)
-arima.clean('Nevada', 27)
-arima.clean('New_Mexico', 22)
-arima.clean('New_York', 17)
-arima.clean('Oregon', 17)
-arima.clean('Virginia', 27)
-arima.clean('Washington', 22)
+```
+### Michigan 
+```{r Clean Forecast Michigan, echo=FALSE, fig.align="center", fig.width = 14}
+arima.clean('Michigan',17)
+```
+### Minnesota
+```{r Clean Forecast Minnesota, echo=FALSE, fig.align="center", fig.width = 14}
+arima.clean('Minnesota',17)
+```
+### Nevada
+```{r Clean Forecast Nevada, echo=FALSE, fig.align="center", fig.width = 14}
+arima.clean('Nevada',27)
+```
+### New Mexico
+```{r Clean Forecast New Mexico, echo=FALSE, fig.align="center", fig.width = 14}
+arima.clean('New_Mexico',22)
+```
+### New York 
+```{r Clean Forecast New York, echo=FALSE, fig.align="center", fig.width = 14}
+arima.clean('New_York',17)
+```
+### Oregon
+```{r Clean Forecast Oregon, echo=FALSE, fig.align="center", fig.width = 14}
+arima.clean('Oregon',17)
+```
+### Virginia
+```{r Clean Forecast Virginia, echo=FALSE, fig.align="center", fig.width = 14}
+arima.clean('Virginia',27)
+```
+### Washington
+```{r Clean Forecast Washington, echo=FALSE, fig.align="center", fig.width = 14}
+arima.clean('Washington',22)
 ```
 
-## Research Question 2
-What would the trend of total energy generation be until the commitment years for each of the 12 states?
+## Question 2: What would the trend of total energy generation be until the commitment years for each of the 12 states?
 ```{r All Forecast, echo=FALSE}
 arima.all('California', 23)
 arima.all('Connecticut', 17)
@@ -782,9 +817,56 @@ arima.all('Oregon', 17)
 arima.all('Virginia', 27)
 arima.all('Washington', 22)
 ```
+### California 
+```{r All Forecast California, echo=FALSE, fig.align='center', fig.width=14}
+arima.all('California', 23)
+```
+### Connecticut 
+```{r All Forecast Connecticut, echo=FALSE, fig.align='center', fig.width=14}
+arima.all('Connecticut', 17)
+```
+### Illinois 
+```{r All Forecast Illinois, echo=FALSE, fig.align='center', fig.width=14}
+arima.all('Illinois', 27)
+```
+### Maine 
+```{r All Forecast Maine, echo=FALSE, fig.align='center', fig.width=14}
+arima.all('Maine', 27)
+```
+### Michigan 
+```{r All Forecast Michigan, echo=FALSE, fig.align="center", fig.width = 14}
+arima.all('Michigan',17)
+```
+### Minnesota
+```{r All Forecast Minnesota, echo=FALSE, fig.align="center", fig.width = 14}
+arima.all('Minnesota',17)
+```
+### Nevada
+```{r All Forecast Nevada, echo=FALSE, fig.align="center", fig.width = 14}
+arima.all('Nevada',27)
+```
+### New Mexico
+```{r All Forecast New Mexico, echo=FALSE, fig.align="center", fig.width = 14}
+arima.all('New_Mexico',22)
+```
+### New York 
+```{r All Forecast New York, echo=FALSE, fig.align="center", fig.width = 14}
+arima.all('New_York',17)
+```
+### Oregon
+```{r All Forecast Oregon, echo=FALSE, fig.align="center", fig.width = 14}
+arima.all('Oregon',17)
+```
+### Virginia
+```{r All Forecast Virginia, echo=FALSE, fig.align="center", fig.width = 14}
+arima.all('Virginia',27)
+```
+### Washington
+```{r All Forecast Washington, echo=FALSE, fig.align="center", fig.width = 14}
+arima.all('Washington',22)
+```
 
-## Research Question 3
-How does the clean energy generation growth compare to the total energy generation growth? (Does clean eenrgy generation meet total energy generation?)
+## Question 3: How does the clean energy generation growth compare to the total energy generation growth? (Does clean eenrgy generation meet total energy generation?)
 ```{r Result, echo=FALSE}
 result.df <- data.frame(State=State, 
                         Forecasted.Year=Forecasted.Year, 
@@ -797,8 +879,8 @@ knitr::kable(result.df)
 \newpage
 
 # Summary and Conclusions
-has met: Maine 
-close: Illinois 
+Out of the 12 states that have committed to 100% clean energy goals, only Maine is projected to be able to meet the goal. All other states will likely to fail to meet their commitments, though Illinois is close to meet the goal. 
+
 
 \newpage
 
