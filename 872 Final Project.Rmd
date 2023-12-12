@@ -338,6 +338,7 @@ knitr::kable(EIA_data_summary,caption = "Table summarizing the dataset structure
 
 # Exploratory Analysis 
 In this exploratory analysis, we will investigate the net generation data of clean energy and total electricity generation across 12 states. Our objective is to examine whether these time series datasets exhibit any obvious trends or seasonality patterns from January 2001 to August 2023. Here we will first generate the graphs of both clean energy and total electricity generation to observe any obvious trend, then decompose the graphes to see more detailed trend and seasonality display. We will also use Augmented Dickey Fuller test to find out whether the graph is stationary so that we can continue our projection process. Understanding these patterns is crucial as they can significantly impact the accuracy of our future forecasts.
+
 ```{r funtioncs, echo=FALSE}
 csvs <- list.files(path = here('Processed'),pattern = "\\.csv$", full.names = TRUE)
 
@@ -425,6 +426,7 @@ plot.all.ca <- plot_all("California")
 
 combined.plot.ca <- grid.arrange(plot.clean.ca, plot.all.ca, ncol = 2)
 ```
+
 Following the plots are the graph of the decomposed clean energy and total electricity generation time series dataset. From both graphs, while the trend now is not very clear, we can observe obvious seasonality, thus we may need to perform AD-Fuller test to see whether both time series are stationary to perform forecasts.
 ```{r, echo=FALSE, fig.align='center', fig.width= 10, fig.cap='Decomposition, Clean Energy, California'}
 #CA.clean TS
@@ -432,18 +434,24 @@ CA.clean.ts <- ts(CA.clean$clean_energy, start = c(2001,1),frequency = 12)
 decompose.clean.ca <- decompose(CA.clean.ts)
 decomp.plot(decompose.clean.ca, main = 'Decomposition of time series of clean energy electricity generation in CA')
 ```
+
+\newpage
+
 ```{r, echo=FALSE, fig.align='center', fig.width= 10, fig.cap='Decomposition, All Fuels, California'}
 #CA.all TS
 CA.all.ts <- ts(CA.all$All.fuels, start = c(2001,1),frequency = 12)
 decompose.all.ca <- decompose(CA.all.ts)
 decomp.plot(decompose.all.ca, main = 'Decomposition of time series of total electricity generation in CA')
 ```
+
 The results of both time series for state California is listed as follow: 
 ```{r, echo = FALSE, warning=FALSE, fig.align='center'}
 adf.test(CA.clean.ts, alternative="stationary", k=0)
 adf.test(CA.all.ts, alternative="stationary", k=0)
 ```
 From the tests, we can tell that the p-values of both data are smaller than the signifance level, indicating that both data are stationary.
+
+\newpage
 
 ## Connecticut
 
@@ -463,6 +471,7 @@ plot.all.ct<-plot_all("Connecticut")
 
 combined.plot.ct <- grid.arrange(plot.clean.ct, plot.all.ct, ncol = 2)
 ```
+
 Following the plots are the graph of the decomposed clean energy and total electricity generation time series dataset. From both graphs, while we only observe trend for the total generation graph, there exist obvious seasonality, thus we may need to perform AD-Fuller test to see whether both time series are stationary to perform forecasts.
 ```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, Clean Energy, Connecticut'}
 # CT clean TS
@@ -471,20 +480,26 @@ decompose.clean.ct <- decompose(CT.clean.ts)
 decomp.plot(decompose.clean.ct, main = 'Decomposition of time series of clean energy electricity generation in CT')
 ```
 
+\newpage
+
 ```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, All Fuels, Connecticut'}
 # CT all TS
 CT.all.ts <- ts(CT.all$All.fuels, start = c(2001, 1), frequency = 12)
 decompose.all.ct <- decompose(CT.all.ts)
 decomp.plot(decompose.all.ct,'Decomposition of time series of total electricity generation in CT')
 ```
-The results of both time series for state Connecticut is listed as follow: 
+
+The results of both time series for state Connecticut are listed as follow: 
 ```{r, echo = FALSE, warning=FALSE, fig.align='center'}
 adf.test(CT.clean.ts, alternative="stationary", k=0)
 adf.test(CT.all.ts, alternative="stationary", k=0)
 ```
 From the tests, we can tell that the p-values of both data are smaller than the signifance level, indicating that both data are stationary.
 
+\newpage
+
 ## Illinois
+For state Illinois, while its total electricity generation was increasing before 2012 and went downward since then, it's electricity generation from clean energy is always going upward in the past two decades. What's more, both plots seem to exhibit seasonality. We now need to take a closer to by decomposing the two time series data to confirm our observations.
 ```{r, echo=FALSE, fig.align='center', fig.width= 14, message=FALSE, fig.cap='Clean Energy and Total Electricity Generation of State Illinois, 01/2001~08/2023'}
 illinois <- csv_reader('Illinois')
 
@@ -501,13 +516,14 @@ plot.all.il <- plot_all("Illinois")
 combined.plot.il <- grid.arrange(plot.clean.il, plot.all.il, ncol = 2)
 ```
 
+Below are the graphs of the decompose of two time series data. From both graphs we can actually see a upward trend and seasonality. We need to perform AD-Fuller test to see whether both graphs are stationary so that we can peform a more accurate forecast.
 ```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, Clean Energy, Illinois'}
 # IL clean TS
 IL.clean.ts <- ts(IL.clean$clean_energy, start = c(2001, 1), frequency = 12)
 decompose.clean.il <- decompose(IL.clean.ts)
 decomp.plot(decompose.clean.il, main = 'Decomposition of time series of clean energy electricity generation in IL')
 ```
-
+\newpage
 ```{r, echo=FALSE, fig.align='center', fig.width=10, fig.cap='Decomposition, All Fuels, Illinois'}
 # IL all TS
 IL.all.ts <- ts(IL.all$All.fuels, start = c(2001, 1), frequency = 12)
@@ -709,6 +725,12 @@ knitr::kable(result.df)
 
 # Summary and Conclusions
 Out of the 12 states that have committed to 100% clean energy goals, only Maine is projected to be able to meet the goal. All other states will likely to fail to meet their commitments, though Illinois is close to meet the goal. 
+
+# Limitations
+There exists several limitations in our time series forecasts.
+First, our analysis primarily relies on two single-variable time series forecasts: one for electricity generated by clean energy and another for total electricity generated. However, it's worth noting that these variables may exhibit correlations or dependencies that are not considered in our current approach. Future research could explore multivariate time series models to capture potential interactions and dependencies between different types of fuels, leading to more precise forecasts.
+Second, clean energy has experienced different rates of development over the past two decades, with drastic growth in the past 10 years and more smooth increase in the first decade. This may introduce uncertainty into our forecasts, as past data may not fully reflect future trends. 
+Last, our forecasts are based on historical data, which may not account for unforeseen factors that could emerge in the future and significantly impact the development of clean energy. As new technologies, policies, and global events unfold, they may alter the trajectory of clean energy generation. Therefore, our models may not capture the full range of potential influences on future outcomes.
 
 \newpage
 
