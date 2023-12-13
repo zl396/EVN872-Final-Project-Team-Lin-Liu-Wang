@@ -718,7 +718,6 @@ result.df <- data.frame(State=State,
                         Clean.Energy.Forecast=Clean.Energy.Forecast, 
                         All.Energy.Forecast=All.Energy.Forecast)
 
-knitr::kable(result.df)
 knitr::kable(result.df,caption = "Table summarizing the major results of 12 states' generation")
 ```
 
