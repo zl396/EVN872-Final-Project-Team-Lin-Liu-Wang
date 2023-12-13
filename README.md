@@ -17,7 +17,7 @@ renewable energy, clean energy, energy projection, Clean energy goals
 
 ## Database Information
 
-This data set was found using EIA'S ELECTRICITY DATA BROWSER FROM =vvvvu&geo=000000000001&sec=g&freq=M&start=200101&end=202308&ctype=linechart&ltype=pin It was originally accessed on November 16th, 2023 and later altered for analysis purposes using RStudio. Variables from the original data sets that were repetitive or not relevant for our comparative analysis were removed. The original data can be found in the Data folder, while other data sets created by the authors of this repository can be found in Processed.
+This data set was found using EIA'S ELECTRICITY DATA BROWSER FROM https://www.eia.gov/electricity/data/browser/#/topic/0?agg=2,0,1&fuel=vvvvu&geo=000000000001&sec=g&freq=M&start=200101&end=202308&ctype=linechart&ltype=pin&rtype=s&pin=&rse=0&maptype=0 .It was originally accessed on November 16th, 2023 and later altered for analysis purposes using RStudio. Variables from the original data sets that were repetitive or not relevant for our comparative analysis were removed. The original data can be found in the Data folder, while other data sets created by the authors of this repository can be found in Processed.
 
 
 ## Folder structure, file formats, and naming conventions 
