@@ -3,35 +3,34 @@
 
 ## Summary
 
-<This repository holds the contents related to a Duke Nicholas School of the Environment course titled Environmental Data Analytics, taught during the Spring of 2023. The data used for our analysis consist of monthly net generation for differenct sectors from EIA. The Data file contains raw data and all processed data are stored in Processed file>
+This repository holds the contents related to a Duke Nicholas School of the Environment course titled Environmental Data Analytics, taught during the Spring of 2023. The data used for our analysis consist of monthly net generation for differenct sectors from EIA. The Data file contains raw data and all processed data are stored in Processed file
 
 ## Investigators
 
-<Zhenghao Lin, Will.lin@duke.edu
+Zhenghao Lin, Will.lin@duke.edu
 Chenjia Liu, cl652@duke.edu
-Shuyi Wang, Lucy.wang@duke.edu>
+Shuyi Wang, Lucy.wang@duke.edu
 
 ## Keywords
 
-<renewable energy, clean energy, energy projection, Clean energy goals>
+renewable energy, clean energy, energy projection, Clean energy goals
 
 ## Database Information
 
-<This data set was found using EIA'S ELECTRICITY DATA BROWSER FROM =vvvvu&geo=000000000001&sec=g&freq=M&start=200101&end=202308&ctype=linechart&ltype=pin It was originally accessed on November 16th, 2023 and later altered for analysis purposes using RStudio. Variables from the original data sets that were repetitive or not relevant for our comparative analysis were removed. The original data can be found in the Data folder, while other data sets created by the authors of this repository can be found in Processed.>
+This data set was found using EIA'S ELECTRICITY DATA BROWSER FROM =vvvvu&geo=000000000001&sec=g&freq=M&start=200101&end=202308&ctype=linechart&ltype=pin It was originally accessed on November 16th, 2023 and later altered for analysis purposes using RStudio. Variables from the original data sets that were repetitive or not relevant for our comparative analysis were removed. The original data can be found in the Data folder, while other data sets created by the authors of this repository can be found in Processed.
 
 
 ## Folder structure, file formats, and naming conventions 
 
-<describe the folders contained in the repository, including what type of files they contain
-The raw data is stored in Data folder and in .csv format. THe processed data is stored in Processed folder in .csv format as well. The code files for different section are stored in Code folder, and are in .Rmd format.>
+The raw data is stored in Data folder and in .csv format. THe processed data is stored in Processed folder in .csv format as well. The code files for different section are stored in Code folder, and are in .Rmd format.
 
-<Files within our folders were kept only if relevant to avoid cluttering up our work space. Our .Rproj file created the workspace in which we worked through creating our final report. Code files were all written using RStudio and are therefore in .Rmd for easy sharing. he final PDF for this project can be found in the Output folder. >
+Files within our folders were kept only if relevant to avoid cluttering up our work space. Our .Rproj file created the workspace in which we worked through creating our final report. Code files were all written using RStudio and are therefore in .Rmd for easy sharing. he final PDF for this project can be found in the Output folder. 
 
-<Files are named conventionally, using the original file name for our raw data set that is associated with the .txt file in the Data folder. Processed data is named to distinguish it between the raw dataset and all file names will be explanatory as to the contents held within the file. Each state has a independent file so the file is named using states name. >
+Files are named conventionally, using the original file name for our raw data set that is associated with the .txt file in the Data folder. Processed data is named to distinguish it between the raw dataset and all file names will be explanatory as to the contents held within the file. Each state has a independent file so the file is named using states name. 
 
 ## Metadata
 
-<| Column Name                               | Description                                      | Class   | Units                  |
+| Column Name                               | Description                                      | Class   | Units                  |
 |-------------------------------------------|--------------------------------------------------|---------|------------------------|
 | All fuels                                 | All fuels                                        | numeric | thousand megawatthours |
 | coal                                      | coal                                             | numeric | thousand megawatthours |
@@ -56,11 +55,11 @@ The raw data is stored in Data folder and in .csv format. THe processed data is 
 | all utility-scale solar:utility-scale thermal | all utility-scale solar:utility-scale thermal  | numeric | thousand megawatthours |
 | Date                                      | Date                                             | Date    |     D-M-Y                |
 | State                                     | State                                            |Categorical|       NA               |
-> 
+
 
 ## Scripts and code
 
-<Within this repository, you will find a 872 Final project.Rmd which includes all the code used to wrangle, visualize, and evaluate our research questions. This .Rmd file can be found within the Code folder.>
+Within this repository, you will find a 872 Final project.Rmd which includes all the code used to wrangle, visualize, and evaluate our research questions. This .Rmd file can be found within the Code folder.
 
 ## Quality assurance/quality control
 
