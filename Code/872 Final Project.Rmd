@@ -545,7 +545,7 @@ For the rest 9 states, while trend varies with state and fuels for electricity g
 \newpage
 
 # Analysis 
-To compare the future trend of clean energy and total energy generation, we choose to use ARIMA model to forecast the future trends. The ARIMA model captures the patterns, seasonality, and trends of the data, which is particularly useful for forecasting future values that are correlated with past values. 
+To compare the future trend of clean energy and total energy generation, we choose to use ARIMA model to forecast the future trends. The ARIMA model captures the patterns, seasonality, and trends of stationary data, which is particularly useful for forecasting future values that are correlated with past values. 
 ```{r time series, echo=FALSE}
 # ts function
 statets_clean <- function(state_name){
@@ -597,8 +597,9 @@ arima.all <- function(state_name,t){
 arima.clean <- function(state_name,t){
   clean.arima <- auto.arima(statets_clean(state_name))
   clean.forecast <- forecast(clean.arima, level=c(95), h=t*12)
+  last_date_forecast = 2023+t 
   plot <- autoplot(clean.forecast)+
-    labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation Forecast (MWh)', subtitle = paste(state_name,'(2001.1-2023.8)'))+
+    labs(y= 'Clean Energy Generation (MWh)', x='Date', title='Clean Energy Generation Forecast (MWh)', subtitle = paste(state_name,paste('(2001 -',last_date_forecast, ')')))+
     mytheme
   last.forecast <- clean.forecast$mean[length(clean.forecast$mean)]
   Clean.Energy.Forecast <- list.append(Clean.Energy.Forecast, last.forecast)
@@ -711,6 +712,7 @@ arima.all('Washington',22)
 ```
 
 ## Question 3: How does the clean energy generation growth compare to the total energy generation growth? (Does clean energy generation meet total energy generation?)
+Shown in the following table, we can compare the forecast clean energy generation with the total energy generation in the last year of the states' committmment goals. If the clean energy generation is equal or greater than the total energy generation, we can say that the state's clean energy goal is met. 
 ```{r Result, echo=FALSE}
 #display result table 
 result.df <- data.frame(State=State, 
@@ -724,7 +726,7 @@ knitr::kable(result.df,caption = "Table summarizing the major results of 12 stat
 \newpage
 
 # Summary and Conclusions
-Out of the 12 states that have committed to 100% clean energy goals, only Maine is projected to be able to meet the goal. All other states will likely to fail to meet their commitments, though Illinois is close to meet the goal. 
+There is obvious seasonality for clean energy and total energy generation, while we are focusing on the trend. The forecast data for comparison between is based on forecast in the month August where the energy generation peaks. Out of the 12 states that have committed to 100% clean energy goals, only Maine is projected to be able to meet the goal. All other states will likely to fail to meet their commitments, though Illinois is close to meet the goal. However, many states have just begun accelerating clean energy transition process in recent years, old data may not provide applicable information for forecasting, resulting in underrated clean energy generation. 
 
 # Limitations
 There exists several limitations in our time series forecasts.
